@@ -24,14 +24,12 @@ RUN pip install --no-cache-dir -r requirements.txt
 # 复制项目文件
 COPY . .
 
-# 创建用于存储 session 文件的目录
-RUN mkdir -p /app/data
 
 # 暴露端口（如果需要）
 # EXPOSE 8000
 
 # 设置卷挂载点
-VOLUME ["/app/data"]
+VOLUME ["/app"]
 
 # 运行应用
 CMD ["python", "bot.py"]
