@@ -6,7 +6,7 @@ services:
     container_name: nesttgbot
     volumes:
       # 挂载数据目录以持久化 session 文件
-      - ./data:/app/data
+      - ./:/app
       # 挂载配置文件（需要手动创建 config.yaml）
       - ./config.yaml:/app/config.yaml:ro
     environment:
