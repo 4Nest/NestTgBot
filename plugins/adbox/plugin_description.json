@@ -1,8 +1,0 @@
-{
-    "name": "adbox",
-    "description": "发送/mysterybox命令指定次数",
-    "usage": "/adbox n*m (n≤10)",
-    "examples": [
-        "/adbox 5*3 - 发送/mysterybox 5消息3次，每次间隔1秒"
-    ]
-}
