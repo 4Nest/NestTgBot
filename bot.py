@@ -138,11 +138,18 @@ for command, info in fixed_handlers.items():
 load_plugins()
 
 # 注册 record 插件的消息监听器，支持所有聊天类型
-from plugins.record import log_chat_messages
-@app.on_message()
-async def global_message_handler(client, message):
-    # print(f"收到消息: chat_id={message.chat.id}, text={message.text or '无文本'}")
-    await log_chat_messages(client, message)
+try:
+    from plugins.record import log_chat_messages
+    @app.on_message()
+    async def global_message_handler(client, message):
+        # print(f"收到消息: chat_id={message.chat.id}, text={message.text or '无文本'}")
+        await log_chat_messages(client, message)
+except ImportError:
+    print("警告: record 插件未找到，消息记录功能将不可用")
+    # 注册一个空的处理器以避免错误
+    @app.on_message()
+    async def global_message_handler(client, message):
+        pass
 
 # 运行机器人
 app.run()
