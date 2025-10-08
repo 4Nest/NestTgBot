@@ -1,0 +1,19 @@
+# config.example.yaml - 配置文件模板
+# 请将此文件复制为 config.yaml 并填写您的实际配置信息
+
+telegram:
+  api_id: "your_telegram_api_id"
+  api_hash: "your_telegram_api_hash"
+
+user:
+  my_user_id: "your_telegram_user_id"
+  my_channel_ids: "your_telegram_channel_ids"
+
+deepseek:
+  api_key: "your_deepseek_api_key"
+  base_url: "https://api.deepseek.com/v1"
+  model: "deepseek-ai/DeepSeek-V3"
+
+xai:
+  api_key: "your_xai_api_key"
+  base_url: "https://api.x.ai/v1"
