@@ -1,0 +1,11 @@
+kurigram
+openai
+Pillow
+python-magic
+rlottie-python
+TgCrypto
+google-generativeai
+ffmpeg
+PyYAML
+beautifulsoup4
+aiohttp
