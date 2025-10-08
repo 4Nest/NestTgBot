@@ -1,89 +1,19 @@
 # NestTgBot
 
-一个基于 Telegram 的多功能机器人，集成了 DeepSeek 和 X.AI 的 API 功能。
+一个AI写的 Telegram 的人形Bot
 
-## 功能特性
+## 插件系统
 
-- 基于 Telegram 的机器人交互
-- 集成 DeepSeek AI 模型
-- 集成 X.AI 模型
-- 可扩展的插件系统
-- 消息记录功能
-- 音乐播放功能
-- 其他实用工具
+本机器人支持插件扩展，插件位于 `plugins/` 目录中。
 
-## 安装与配置
+## Docker 部署流程
 
-### 环境要求
+### 1. 配置文件准备
 
-- Python 3.7+
-- Telegram API 凭据
-- DeepSeek API 密钥
-- X.AI API 密钥
+首先，下载配置模板文件并重命名为 `config.yaml`：
 
-### 方法一：传统安装
 
-1. 克隆此仓库：
-   ```bash
-   git clone https://github.com/4Nest/NestTgBot.git
-   cd NestTgBot
-   ```
-
-2. 创建虚拟环境并激活：
-   ```bash
-   python -m venv .venv
-   source .venv/bin/activate  # Linux/Mac
-   .venv\Scripts\activate     # Windows
-   ```
-
-3. 安装依赖：
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. 配置机器人：
-   - 复制配置模板：`cp config.example.yaml config.yaml`
-   - 编辑 `config.yaml` 文件，填入您的 API 凭据
-
-5. 运行机器人：
-   ```bash
-   python bot.py
-   ```
-
-### 方法二：Docker 部署（推荐）
-
-1. 确保已安装 Docker 和 docker-compose：
-   ```bash
-   # Debian/Ubuntu 系统安装 Docker
-   sudo apt update
-   sudo apt install docker.io docker-compose
-   
-   # 启动 Docker 服务
-   sudo systemctl start docker
-   sudo systemctl enable docker
-   ```
-
-2. 克隆此仓库：
-   ```bash
-   git clone https://github.com/4Nest/NestTgBot.git
-   cd NestTgBot
-   ```
-
-3. 配置机器人：
-   - 复制配置模板：`cp config.example.yaml config.yaml`
-   - 编辑 `config.yaml` 文件，填入您的 API 凭据
-
-4. 构建并运行容器：
-   ```bash
-   docker-compose up -d
-   ```
-
-5. 查看日志：
-   ```bash
-   docker-compose logs -f
-   ```
-
-### 配置说明
+然后编辑 `config.yaml` 文件，填入您的 API 凭据：
 
 - `telegram.api_id` 和 `telegram.api_hash`：从 [Telegram](https://my.telegram.org/) 获取
 - `user.my_user_id`：您的 Telegram 用户 ID
@@ -91,6 +21,76 @@
 - `deepseek.api_key`：从 [DeepSeek](https://platform.deepseek.com/) 获取的 API 密钥
 - `xai.api_key`：从 [X.AI](https://x.ai/) 获取的 API 密钥
 
-## 插件系统
+### 2. 使用 Docker 运行（首次登录）
 
-本机器人支持插件扩展，插件位于 `plugins/` 目录中。
+根据您的 CPU 架构选择相应的镜像：
+
+**ARM 架构（如树莓派、M系列芯片）：**
+```bash
+docker run -it --rm \
+  -v ./:/app \
+  -v ./config.yaml:/app/config.yaml:ro \
+  --name NTBot \
+  chen256/nesttgbot:arm python bot.py
+```
+
+**x86 架构（Intel/AMD处理器）：**
+```bash
+docker run -it --rm \
+  -v ./:/app \
+  -v ./config.yaml:/app/config.yaml:ro \
+  --name NTBot \
+  chen256/nesttgbot:latest python bot.py
+```
+
+运行上述命令后，机器人会启动并尝试登录 Telegram。登录成功后，按 `Ctrl+C` 手动退出。
+
+### 3. 使用 Docker Compose 启动
+
+首次登录成功后，可以使用 `docker-compose` 来启动机器人服务。
+
+根据您的 CPU 架构，需要修改 `docker-compose.yml` 文件中的镜像版本：
+
+**ARM 架构：**
+```yaml
+version: '3.8'
+
+services:
+  nesttgbot:
+    image: chen256/nesttgbot:arm
+    container_name: nesttgbot
+    volumes:
+      - ./:/app
+      - ./config.yaml:/app/config.yaml:ro
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
+```
+
+**x86 架构：**
+```yaml
+version: '3.8'
+
+services:
+  nesttgbot:
+    image: chen256/nesttgbot:latest
+    container_name: nesttgbot
+    volumes:
+      - ./:/app
+      - ./config.yaml:/app/config.yaml:ro
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
+```
+
+启动服务：
+```bash
+docker-compose up -d
+```
+
+查看日志：
+```bash
+docker-compose logs -f
+```
+
+
