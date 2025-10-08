@@ -5,7 +5,7 @@ from config_loader import API_ID, API_HASH, MY_USER_ID, MY_CHANNEL_IDS
 
 # 检查是否为空并转换为正确类型
 if API_ID is None or API_HASH is None or MY_USER_ID is None:
-    raise ValueError("API_ID, API_HASH, and MY_USER_ID environment variables are required")
+    raise ValueError("API_ID, API_HASH, and MY_USER_ID must be set in config.yaml")
 api_id = int(API_ID)
 MY_USER_ID = int(MY_USER_ID)
 
@@ -21,8 +21,17 @@ else:
     MY_CHANNEL_IDS = []
     print("MY_CHANNEL_IDS 未设置")
 
+# 设置 session 文件路径以实现持久化
+session_dir = "/app/data"  # Docker 中的默认路径
+# 如果在本地运行且不存在 /app/data 目录，则使用当前目录下的 data 目录
+if not os.path.exists("/app/data"):
+    session_dir = os.path.join(os.getcwd(), "data")
+    os.makedirs(session_dir, exist_ok=True)
+
+session_file = os.path.join(session_dir, "my_bot.session")
+
 # 创建实例
-app = Client("my_bot", api_id=api_id, api_hash=API_HASH)
+app = Client(session_file, api_id=api_id, api_hash=API_HASH)
 
 # 固定的 app 模块处理器
 fixed_handlers = {
