@@ -8,10 +8,20 @@
 
 ## Docker 部署流程
 
-### 1. 配置文件准备
+### 1. 克隆仓库和配置文件准备
 
-首先，下载配置模板文件并重命名为 `config.yaml`：
+首先，克隆项目仓库：
 
+```bash
+git clone https://github.com/4Nest/NestTgBot.git
+cd NestTgBot
+```
+
+然后，复制配置模板文件并重命名为 `config.yaml`：
+
+```bash
+copy config.example.yaml config.yaml
+```
 
 然后编辑 `config.yaml` 文件，填入您的 API 凭据：
 
