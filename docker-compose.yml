@@ -14,19 +14,3 @@ services:
     restart: unless-stopped
     # 如果需要访问主机网络（例如用于某些网络配置）
     # network_mode: host
-
-  # 用于首次设置的交互式服务
-  nesttgbot-setup:
-    build: .
-    container_name: nesttgbot-setup
-    volumes:
-      # 挂载数据目录以持久化 session 文件
-      - ./data:/app/data
-      # 挂载配置文件（需要手动创建 config.yaml）
-      - ./config.yaml:/app/config.yaml:ro
-    environment:
-      - PYTHONUNBUFFERED=1
-    stdin_open: true
-    tty: true
-    # 如果需要访问主机网络（例如用于某些网络配置）
-    # network_mode: host

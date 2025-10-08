@@ -73,29 +73,12 @@
    - 复制配置模板：`cp config.example.yaml config.yaml`
    - 编辑 `config.yaml` 文件，填入您的 API 凭据
 
-4. 创建数据目录用于持久化存储 session 文件：
-   ```bash
-   mkdir -p data
-   ```
-
-5. 首次运行（需要交互式输入凭据）：
-   ```bash
-   # 使用交互式模式运行容器进行首次设置
-   docker run -it --rm \
-     -v $(pwd)/data:/app/data \
-     -v $(pwd)/config.yaml:/app/config.yaml:ro \
-     nesttgbot python bot.py
-   
-   # 按提示输入电话号码或机器人令牌完成认证
-   # 认证完成后，按 Ctrl+C 退出
-   ```
-
-6. 构建并运行容器：
+4. 构建并运行容器：
    ```bash
    docker-compose up -d
    ```
 
-7. 查看日志：
+5. 查看日志：
    ```bash
    docker-compose logs -f
    ```
@@ -107,10 +90,6 @@
 - `user.my_channel_ids`：您要监控的频道 ID
 - `deepseek.api_key`：从 [DeepSeek](https://platform.deepseek.com/) 获取的 API 密钥
 - `xai.api_key`：从 [X.AI](https://x.ai/) 获取的 API 密钥
-
-## Session 持久化
-
-为了确保机器人在重启后不需要重新认证，session 文件会被持久化存储在 `data` 目录中。在 Docker 部署中，这个目录会被挂载到容器外部，确保 session 文件在容器重启后仍然存在。
 
 ## 插件系统
 
